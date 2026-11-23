@@ -18,10 +18,7 @@ kubectl taint nodes -l app=mysql app=mysql:NoSchedule --overwrite
 
 # 4. Install Ingress Controller
 kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/main/deploy/static/provider/kind/deploy.yaml
-kubectl wait --namespace ingress-nginx \
-  --for=condition=ready pod \
-  --selector=app.kubernetes.io/component=controller \
-  --timeout=180s
+kubectl wait --namespace ingress-nginx --for=condition=ready pod --selector=app.kubernetes.io/component=controller --timeout=180s
 
 # 5. Deploy todoapp helm chart (with mysql sub-chart)
 helm upgrade --install todoapp "$CHART_DIR" -f "$CHART_DIR/values.yaml" --wait --timeout 10m

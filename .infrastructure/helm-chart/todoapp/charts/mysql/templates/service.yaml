@@ -9,6 +9,6 @@ spec:
   selector:
     app: {{ .Chart.Name }}
   ports:
-  - name: mysql
-    port: 3306
+    - name: mysql
+      port: 3306
   clusterIP: None

@@ -76,10 +76,7 @@ The script:
 Any value can be overridden at install time, for example:
 
 ```bash
-helm upgrade --install todoapp .infrastructure/helm-chart/todoapp \
-  --set hpa.maxReplicas=8 \
-  --set image.tag=4.0.1 \
-  --set mysql.replicas=2
+helm upgrade --install todoapp .infrastructure/helm-chart/todoapp --set hpa.maxReplicas=8 --set image.tag=4.0.1 --set mysql.replicas=2
 ```
 
 ## Cleanup
