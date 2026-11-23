@@ -2,7 +2,7 @@
 set -euo pipefail
 
 CLUSTER_NAME="${CLUSTER_NAME:-kind}"
-CHART_DIR=".infrastructure/helm-chart/todoapp"
+CHART_DIR="helm-chart/todoapp"
 
 # 1. Create kind cluster from cluster.yml (skip if it already exists)
 if ! kind get clusters | grep -qx "$CLUSTER_NAME"; then

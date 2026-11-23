@@ -2,7 +2,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: {{ .Chart.Name }}-init
-  namespace: {{ .Values.namespace }}
+  namespace: {{ .Chart.Name }}-{{ .Values.namespace }}
   labels:
     app: {{ .Chart.Name }}
 data:

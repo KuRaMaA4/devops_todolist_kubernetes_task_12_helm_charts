@@ -13,7 +13,7 @@ secrets:
   DB_NAME: app_db
   DB_USER: app_user
   DB_PASSWORD: "1234"
-  DB_HOST: mysql-0.mysql.mysql.svc.cluster.local
+  DB_HOST: mysql-0.mysql.mysql-mysql.svc.cluster.local
 
 config:
   PYTHONUNBUFFERED: "1"

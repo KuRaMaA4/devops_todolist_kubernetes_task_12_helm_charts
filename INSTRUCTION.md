@@ -10,7 +10,7 @@
 ## Chart layout
 
 ```
-.infrastructure/helm-chart/todoapp/
+helm-chart/todoapp/
 ├── Chart.yaml              # declares the dependency on the mysql sub-chart
 ├── values.yaml             # namespace, image, secrets, resources, rollingUpdate,
 │                           # affinity, hpa, pv/pvc, serviceAccount, ...
@@ -23,6 +23,14 @@
         │                   # resources, tolerations, affinity
         └── templates/      # namespace, secret, configmap, service, statefulset
 ```
+
+Notes:
+- The chart lives in the repository-root `helm-chart/todoapp` directory.
+  `.infrastructure/helm-chart` is a symlink to `../helm-chart`, so the course CI
+  (`.github/workflows/validate-helm-chart.yml`) still finds the chart at its expected path.
+- Namespaces are rendered as `<.Chart.Name>-<values.namespace>`:
+  `todoapp-todoapp` for the app and `mysql-mysql` for MySQL
+  (`DB_HOST` is `mysql-0.mysql.mysql-mysql.svc.cluster.local`).
 
 ## Deploy
 
@@ -45,8 +53,8 @@ The script:
 
 1. Lint and render the chart:
    ```bash
-   helm lint .infrastructure/helm-chart/todoapp
-   helm template .infrastructure/helm-chart/todoapp -f .infrastructure/helm-chart/todoapp/values.yaml
+   helm lint helm-chart/todoapp
+   helm template helm-chart/todoapp -f helm-chart/todoapp/values.yaml
    ```
 2. Check the release:
    ```bash
@@ -58,9 +66,9 @@ The script:
    ```
 4. Check the workloads. You should see 2 `mysql-*` pods (one on each `app=mysql` node) and 2 `todoapp-*` pods, all `Running`:
    ```bash
-   kubectl get pods -n mysql -o wide
-   kubectl get pods -n todoapp -o wide
-   kubectl get hpa,ing,pvc -n todoapp
+   kubectl get pods -n mysql-mysql -o wide
+   kubectl get pods -n todoapp-todoapp -o wide
+   kubectl get hpa,ing,pvc -n todoapp-todoapp
    ```
 5. Open the app:
    - Ingress: http://localhost/
@@ -76,7 +84,7 @@ The script:
 Any value can be overridden at install time, for example:
 
 ```bash
-helm upgrade --install todoapp .infrastructure/helm-chart/todoapp --set hpa.maxReplicas=8 --set image.tag=4.0.1 --set mysql.replicas=2
+helm upgrade --install todoapp helm-chart/todoapp --set hpa.maxReplicas=8 --set image.tag=4.0.1 --set mysql.replicas=2
 ```
 
 ## Cleanup
